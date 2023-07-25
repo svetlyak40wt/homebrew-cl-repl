@@ -13,4 +13,5 @@
   :depends-on ("cl-repl")
   :build-operation "deploy-op"
   :build-pathname "cl-repl"
-  :entry-point "cl-repl:main")
+  :entry-point "cl-repl:main"
+  :homepage "https://github.com/svetlyak40wt/homebrew-cl-repl")
