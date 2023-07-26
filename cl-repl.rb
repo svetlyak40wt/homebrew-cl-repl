@@ -1,11 +1,8 @@
 class ClRepl < Formula
   desc "A thin wrapper to package https://github.com/fstamour/cl-repl for OSX using Homebrew."
   homepage "https://github.com/svetlyak40wt/homebrew-cl-repl"
-#  url "https://github.com/svetlyak40wt/homebrew-cl-repl/archive/v0.6.4.tar.gz"
-  url File.dirname(__FILE__), :using => :git
-  version "0.6.5-rc1"
-
-  sha256 "5ac85ec5159246f9cd8185eb62522b1099d1e6a318b4b9ad95d310ca50f0cb33"
+  url "https://github.com/svetlyak40wt/homebrew-cl-repl/archive/v0.6.4.tar.gz"
+  sha256 "06523636ec7bd8c7fb9544411ba30c59e096fbca2c0fac33dc9bdb39a7313572"
   head ""
 
   depends_on "sbcl" => :build
