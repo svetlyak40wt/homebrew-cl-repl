@@ -1,18 +1,14 @@
-(defun asdf/driver::other-system-version (system-name)
-  (break)
-  (asdf:component-version (asdf:find-system system-name)))
-
-(export 'asdf/driver::other-system-version
-        (find-package "ASDF/DRIVER"))
-
-
 (asdf:defsystem "homebrew-cl-repl"
+  :description "A thin wrapper to package https://github.com/fstamour/cl-repl for OSX using Homebrew."
   :version "0.6.4"
-  ;; (:other-system-name "cl-repl")
   :defsystem-depends-on ("deploy")
   :serial t
-  :depends-on ("quicklisp"              ;; file https://github.com/fstamour/cl-repl/blob/master/src/completer.lisp depends on quicklisp :(
-               "cl-repl")
+  :depends-on ("quicklisp" ;; file https://github.com/fstamour/cl-repl/blob/master/src/completer.lisp depends on quicklisp :(
+               "cl-repl"
+               ;; This style of dependencies is not supported in cl-brewer yet :(
+               ;; (:version "cl-repl"
+               ;;           "0.6.4")
+               )
   :build-operation "deploy-op"
   :build-pathname "cl-repl"
   :entry-point "cl-repl:main"

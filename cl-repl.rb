@@ -1,7 +1,10 @@
-class HomebrewClRepl < Formula
-  desc NIL
+class ClRepl < Formula
+  desc "A thin wrapper to package https://github.com/fstamour/cl-repl for OSX using Homebrew."
   homepage "https://github.com/svetlyak40wt/homebrew-cl-repl"
-  url "https://github.com/svetlyak40wt/homebrew-cl-repl/archive/v0.6.4.tar.gz"
+#  url "https://github.com/svetlyak40wt/homebrew-cl-repl/archive/v0.6.4.tar.gz"
+  url File.dirname(__FILE__), :using => :git
+  version "0.6.5-rc1"
+
   sha256 "5ac85ec5159246f9cd8185eb62522b1099d1e6a318b4b9ad95d310ca50f0cb33"
   head ""
 
@@ -51,6 +54,11 @@ class HomebrewClRepl < Formula
     sha256 "6f2b9eef348174aa1aa99063fe011e01216127ed0ee29a73bab58d20ad1c6436"
   end
 
+  resource "quicklisp-quicklisp-client" do
+    url "http://dist.ultralisp.org/archive/1254/quicklisp-quicklisp-client-20210216010650.tgz"
+    sha256 "d8e39e878da43e54ea69194c075da371e57c7c76f01000d541dc43e3c3ee6721"
+  end
+
   resource "sharplispers-conium" do
     url "http://dist.ultralisp.org/archive/910/sharplispers-conium-20210611213021.tgz"
     sha256 "312b4d2be9f3bfa00f796e252ec81de99a3d14626fad8505c2abf494354bd44e"
@@ -95,7 +103,17 @@ class HomebrewClRepl < Formula
     ENV["CL_SOURCE_REGISTRY"] = "#{buildpath}/:#{buildpath}/_brew_resources//"
     ENV["ASDF_OUTPUT_TRANSLATIONS"] = "/:/"
 
-    system "sbcl", "--eval", "(require :asdf)", "--eval", "(push :deploy-console *features*)", "--eval", "(asdf:load-system :cl-brewer-deploy-hooks)", "--eval", "(handler-case (asdf:make :homebrew-cl-repl) (error (e) (format *error-output* \"~A~%\" e) (uiop:quit 1)))"
+    system "sbcl", "--eval", "(require :asdf)", "--eval", "(push :deploy-console *features*)", "--eval", "(asdf:load-system :cl-brewer-deploy-hooks)", "--eval", "(HANDLER-BIND ((ERROR
+                (LAMBDA (E)
+                  (UIOP/IMAGE:PRINT-BACKTRACE :CONDITION E)
+                  (UIOP/IMAGE:QUIT 1)))
+               (WARNING #'MUFFLE-WARNING))
+  (ASDF/OPERATE:LOAD-SYSTEM \"quicklisp-starter\"))", "--eval", "(HANDLER-BIND ((ERROR
+                (LAMBDA (E)
+                  (UIOP/IMAGE:PRINT-BACKTRACE :CONDITION E)
+                  (UIOP/IMAGE:QUIT 1)))
+               (WARNING #'MUFFLE-WARNING))
+  (ASDF/OPERATE:MAKE \"homebrew-cl-repl\"))"
 
     system "bash", "-c", "mkdir dyn-libs && find bin/ -name '*.dylib' -exec mv '{}' dyn-libs/ \\;"
 
